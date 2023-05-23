@@ -13,7 +13,7 @@ from .benchmarks.qpe import QPE
 from .benchmarks.quantum_volume import QuantumVolume
 from .benchmarks.random import Random
 from .benchmarks.simon import Simon
-
+from .benchmarks.differentiator import Differentiator
 
 #########################################################################################################
 ########################################### Benchmarks Config ###########################################
@@ -134,6 +134,20 @@ benchmarks = {
         },
         'config': {
             'measure': True,
+        },
+    },
+
+    'differentiator': {
+        'benchmark': Differentiator,
+        'nqubits': {
+            'default': list(range(16, 32, 4)) + [30],
+            '3090': list(range(16, 32, 4)) + [30],
+            'A6000': list(range(16, 32, 4)) + [30],
+            'A100-SXM4-80GB': list(range(16, 34, 2)),
+        },
+        'config': {
+            'measure': False,
+            'num_layers': 1
         },
     },
 }
