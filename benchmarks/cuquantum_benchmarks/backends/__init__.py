@@ -3,9 +3,11 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from .backend_cirq import Cirq
+from .backend_cirq_pqc import CirqPQC
 from .backend_cutn import cuTensorNet
 from .backend_pny import Pny, PnyLightningGpu, PnyLightningCpu, PnyLightningKokkos
 from .backend_qsim import Qsim, QsimCuda, QsimCusv, QsimMgpu
+from .backend_qsim_pqc import QsimPQC, QsimCudaPQC, QsimCusvPQC, QsimMgpuPQC
 from .backend_qiskit import Aer, AerCuda, AerCusv, CusvAer
 from .backend_qulacs import QulacsGpu, QulacsCpu
 try:
@@ -20,11 +22,16 @@ backends = {
     'aer-cusv': AerCusv,
     'cusvaer': CusvAer,
     'cirq': Cirq,
+    'cirq-pqc': CirqPQC,
     'cutn': cuTensorNet,
     'qsim': Qsim,
     'qsim-cuda': QsimCuda,
     'qsim-cusv': QsimCusv,
     'qsim-mgpu': QsimMgpu,
+    'qsim-pqc': QsimPQC,
+    'qsim-cuda-pqc': QsimCudaPQC,
+    'qsim-cusv-pqc': QsimCusvPQC,
+    'qsim-mgpu-pqc': QsimMgpuPQC,
     'pennylane': Pny,
     'pennylane-lightning-gpu': PnyLightningGpu,
     'pennylane-lightning-qubit': PnyLightningCpu,

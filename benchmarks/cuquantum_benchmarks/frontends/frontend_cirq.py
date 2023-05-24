@@ -7,8 +7,8 @@ try:
 except ImportError:
     cirq = None
 
-from .frontend import Frontend
-
+from .frontend import Frontend, GeneralCircuit
+import sympy
 
 class Cirq(Frontend):
 
@@ -23,6 +23,8 @@ class Cirq(Frontend):
         qubits = cirq.LineQubit.range(self.nqubits)
         circuit = cirq.Circuit()
 
+        symbols = []
+        values = []
         for g in gateSeq:
             if g.id == 'h':
                 circuit.append(cirq.H(qubits[g.targets]))
@@ -37,13 +39,28 @@ class Cirq(Frontend):
                 circuit.append(cirq.CZ(qubits[g.controls], qubits[g.targets]))
 
             elif g.id == 'rz':
-                circuit.append(cirq.rz(g.params).on(qubits[g.targets]))
+                if g.symbol is not None:
+                    circuit.append(cirq.rz(sympy.Symbol(g.symbol)).on(qubits[g.targets]))
+                    symbols.append(sympy.Symbol(g.symbol))
+                    values.append(g.params)
+                else:
+                    circuit.append(cirq.rz(g.params).on(qubits[g.targets]))
 
             elif g.id == 'rx':
-                circuit.append(cirq.rx(g.params).on(qubits[g.targets]))
+                if g.symbol is not None:
+                    circuit.append(cirq.rx(sympy.Symbol(g.symbol)).on(qubits[g.targets]))
+                    symbols.append(sympy.Symbol(g.symbol))
+                    values.append(g.params)
+                else:
+                    circuit.append(cirq.rx(g.params).on(qubits[g.targets]))
 
             elif g.id == 'ry':
-                circuit.append(cirq.ry(g.params).on(qubits[g.targets]))
+                if g.symbol is not None:
+                    circuit.append(cirq.ry(sympy.Symbol(g.symbol)).on(qubits[g.targets]))
+                    symbols.append(sympy.Symbol(g.symbol))
+                    values.append(g.params)
+                else:
+                    circuit.append(cirq.ry(g.params).on(qubits[g.targets]))
 
             elif g.id == 'czpowgate':
                 circuit.append(cirq.CZPowGate(exponent=g.params).on(qubits[g.controls], qubits[g.targets]))
@@ -66,4 +83,5 @@ class Cirq(Frontend):
             else:
                 raise NotImplementedError(f"The gate type {g.id} is not defined")
         
-        return circuit
+        obs = [cirq.Z(q) for q in qubits]
+        return GeneralCircuit(circuit, values, symbols, obs)

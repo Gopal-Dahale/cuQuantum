@@ -219,6 +219,16 @@ backends = {
         },
     },
 
+    'cirq-pqc': {
+        'config': {
+            'nshots': 0,
+            'nfused': 4,
+            'ngpus': 0,
+            'ncputhreads': 1,
+            'precision':'single',
+        },
+    },
+
     'qsim': {
         'config': {
             'nshots': 1024,
@@ -252,6 +262,46 @@ backends = {
     'qsim-mgpu': {
         'config': {
             'nshots': 1024,
+            'nfused': 4,
+            'ngpus': 1,
+            'ncputhreads': 1,
+            'precision':'single',
+        },
+    },
+
+    'qsim-pqc': {
+        'config': {
+            'nshots': 0,
+            'nfused': 2,
+            'ngpus': 0,
+            'ncputhreads': multiprocessing.cpu_count(),
+            'precision':'single',
+        },
+    },
+
+    'qsim-cuda-pqc': {
+        'config': {
+            'nshots': 0,
+            'nfused': 2,
+            'ngpus': 1,
+            'ncputhreads': 1,
+            'precision':'single',
+        },
+    },
+
+    'qsim-cusv-pqc': {
+        'config': {
+            'nshots': 0,
+            'nfused': 2,
+            'ngpus': 1,
+            'ncputhreads': 1,
+            'precision':'single',
+        },
+    },
+
+    'qsim-mgpu-pqc': {
+        'config': {
+            'nshots': 0,
             'nfused': 4,
             'ngpus': 1,
             'ncputhreads': 1,

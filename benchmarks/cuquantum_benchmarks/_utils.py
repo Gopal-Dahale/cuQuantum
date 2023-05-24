@@ -273,6 +273,7 @@ class Gate:
         controls: The control qubit(s), if any.
         matrix: The gate matrix.
         params: The gate parameter(s).
+        symbol: Symbol to represent parameter.
         name: The gate name.
     """
     id: str = ''
@@ -280,6 +281,7 @@ class Gate:
     controls: Optional[Union[int, Iterable[int]]] = None
     matrix: Optional[Union[Iterable[float], Iterable[complex]]] = None
     params: Optional[Union[float, Iterable[float]]] = None
+    symbol: Optional[str] = None
     name: Optional[str] = ''
 
     def __post_init__(self):
@@ -314,6 +316,8 @@ class Gate:
             s += f", matrix={self.matrix}"
         elif self.params is not None:
             s += f", params={self.params}"
+        elif self.symbol is not None:
+            s += f", symbol={self.symbol}"
         if self.name:
             s += f", name={self.name}"
         s += ")"

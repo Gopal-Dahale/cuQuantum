@@ -230,7 +230,7 @@ class RunSpecific:
         elif self.general_interface.backend == 'cutn':
             import cuquantum
             version = cuquantum.cutensornet.get_version()
-        elif self.general_interface.backend == 'cirq':
+        elif self.general_interface.backend in ['cirq', 'cirq-pqc'] :
             import cirq
             version = cirq.__version__
         elif self.general_interface.backend == 'naive':
@@ -322,6 +322,8 @@ class RunSpecific:
 
         # get circuit
         circuit = self.get_circuit(circuit_filename)
+
+        logger.info(f"GI BACKEND {self.general_interface.backend}")
 
         # get backend
         backend = createBackend(

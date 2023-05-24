@@ -30,9 +30,9 @@ class Differentiator(Benchmark):
         # apply arbitrary random operations at every layer
         for l in range(num_layers):
             for q in range(nqubits):
-                circuit.append(Gate(id='rz', params=thetas[l, q, 0], targets=q))
-                circuit.append(Gate(id='ry', params=thetas[l, q, 1], targets=q))
-                circuit.append(Gate(id='rz', params=thetas[l, q, 2], targets=q))
+                circuit.append(Gate(id='rz', params=thetas[l, q, 0], targets=q, symbol=f'x_{l}_{q}_{0}'))
+                circuit.append(Gate(id='ry', params=thetas[l, q, 1], targets=q, symbol=f'x_{l}_{q}_{1}'))
+                circuit.append(Gate(id='rz', params=thetas[l, q, 2], targets=q, symbol=f'x_{l}_{q}_{2}'))
 
             circuit += [Gate(id='cnot', controls=q, targets=q+1) for q in range(nqubits-1)]
             circuit += [Gate(id='cnot', controls=nqubits-1, targets=0)]

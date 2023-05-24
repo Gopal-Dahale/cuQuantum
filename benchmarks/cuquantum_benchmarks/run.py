@@ -204,7 +204,7 @@ def run(args=None):
         selected_benchmarks = benchmarks if args.benchmark == 'all' else {args.benchmark: benchmarks[args.benchmark]}
         selected_backend = (args.backend, backend_config[args.backend])
 
-        if ((args.frontend == 'cirq' and args.backend not in ('cirq', 'cutn', *[k for k in backends.keys() if k.startswith('qsim')]))
+        if ((args.frontend == 'cirq' and args.backend not in ('cirq', 'cirq-pqc', 'cutn', *[k for k in backends.keys() if k.startswith('qsim')]))
                 or (args.frontend == 'qiskit' and args.backend not in ('cutn', *[k for k in backends.keys() if 'aer' in k]))
                 or (args.frontend == 'naive' and args.backend != 'naive')
                 or (args.frontend == 'pennylane' and not args.backend.startswith('pennylane'))

@@ -14,3 +14,11 @@ class Frontend:
 
     def generateCircuit(self, gateSeq):
         raise NotImplementedError
+
+class GeneralCircuit:
+
+    def __init__(self, circuit, values, symbols=None, obs=None):
+        self.circuit = circuit
+        self.symbols = symbols
+        self.values = values
+        self.obs = obs
