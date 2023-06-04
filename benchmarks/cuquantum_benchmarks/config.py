@@ -359,6 +359,46 @@ backends = {
         },
     },
 
+    'pennylane-pqc': {
+        'config': {
+            'nshots': 0,
+            'nfused': None,
+            'ngpus': 0,
+            'ncputhreads': 1,
+            'precision': 'single',
+        },
+    },
+
+    'pennylane-lightning-gpu-pqc': {
+        'config': {
+            'nshots': 0,
+            'nfused': None,
+            'ngpus': 1,
+            'ncputhreads': 0,
+            'precision': 'single',
+        },
+    },
+
+    'pennylane-lightning-qubit-pqc': {
+        'config': {
+            'nshots': 0,
+            'nfused': None,
+            'ngpus': 0,
+            'ncputhreads': 1,
+            'precision': 'single',
+        },
+    },
+
+    'pennylane-lightning-kokkos-pqc': {
+        'config': {
+            'nshots': 0,
+            'nfused': None,
+            'ngpus': 1,
+            'ncputhreads': 0,
+            'precision': 'single',
+        },
+    },
+
     'qulacs-gpu': {
         'config': {
             'nshots': 1024,

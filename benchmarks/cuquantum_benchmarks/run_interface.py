@@ -236,16 +236,16 @@ class RunSpecific:
         elif self.general_interface.backend == 'naive':
             from .backends import backends
             version = backends['naive'].version
-        elif self.general_interface.backend == 'pennylane':
+        elif self.general_interface.backend in ['pennylane', 'pennylane-pqc']:
             import pennylane
             version = pennylane.__version__
-        elif self.general_interface.backend == 'pennylane-lightning-gpu':
+        elif self.general_interface.backend in ['pennylane-lightning-gpu', 'pennylane-lightning-gpu-pqc']:
             import pennylane_lightning_gpu
             version = pennylane_lightning_gpu.__version__
-        elif self.general_interface.backend == 'pennylane-lightning-qubit':
+        elif self.general_interface.backend in ['pennylane-lightning-qubit', 'pennylane-lightning-qubit-pqc']:
             import pennylane_lightning
             version = pennylane_lightning.__version__
-        elif self.general_interface.backend == 'pennylane-lightning-kokkos':
+        elif self.general_interface.backend in ['pennylane-lightning-kokkos', 'pennylane-lightning-kokkos-pqc']:
             import pennylane_lightning_kokkos
             version = pennylane_lightning_kokkos.__version__
         elif self.general_interface.backend in ('qulacs-gpu', 'qulacs-cpu'):
