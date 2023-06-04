@@ -44,14 +44,14 @@ class PennylanePQC(Backend):
             raise ValueError("Only analytic gradient is supported")
 
         if self.identifier == "pennylane-lightning-gpu-pqc":
-            if self.ngpus == 1:
+            if self.ngpus:
                 try:
                     import pennylane_lightning_gpu
                 except ImportError as e:
                     raise RuntimeError("PennyLane-Lightning-GPU plugin is not installed") from e
-            else:
-                raise ValueError(f"cannot specify --ngpus > 1 for the backend {self.identifier}")
-            dev = pennylane.device("lightning.gpu", wires=self.nqubits, c_dtype=self.dtype)
+                if self.ngpus > 1:
+                    warnings.warn(f"Only multiple measurements is supported with --ngpus > 1 for the backend {self.identifier}")
+            dev = pennylane.device("lightning.gpu", wires=self.nqubits, c_dtype=self.dtype, batch_obs=True)
         elif self.identifier == "pennylane-lightning-kokkos-pqc":
             # there's no way for us to query what execution space (=backend) that kokkos supports at runtime,
             # so let's just set up Kokkos::InitArguments and hope kokkos to do the right thing...
