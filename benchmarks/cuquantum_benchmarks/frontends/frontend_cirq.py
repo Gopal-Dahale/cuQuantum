@@ -39,7 +39,7 @@ class Cirq(Frontend):
                 circuit.append(cirq.CZ(qubits[g.controls], qubits[g.targets]))
 
             elif g.id == 'rz':
-                if g.symbol is not None:
+                if g.symbol:
                     circuit.append(cirq.rz(sympy.Symbol(g.symbol)).on(qubits[g.targets]))
                     symbols.append(sympy.Symbol(g.symbol))
                     values.append(g.params)
@@ -47,7 +47,7 @@ class Cirq(Frontend):
                     circuit.append(cirq.rz(g.params).on(qubits[g.targets]))
 
             elif g.id == 'rx':
-                if g.symbol is not None:
+                if g.symbol:
                     circuit.append(cirq.rx(sympy.Symbol(g.symbol)).on(qubits[g.targets]))
                     symbols.append(sympy.Symbol(g.symbol))
                     values.append(g.params)
@@ -55,7 +55,7 @@ class Cirq(Frontend):
                     circuit.append(cirq.rx(g.params).on(qubits[g.targets]))
 
             elif g.id == 'ry':
-                if g.symbol is not None:
+                if g.symbol:
                     circuit.append(cirq.ry(sympy.Symbol(g.symbol)).on(qubits[g.targets]))
                     symbols.append(sympy.Symbol(g.symbol))
                     values.append(g.params)

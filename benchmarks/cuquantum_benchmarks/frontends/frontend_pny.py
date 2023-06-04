@@ -10,7 +10,7 @@ try:
 except ImportError:
     pennylane = None
 
-from .frontend import Frontend
+from .frontend import Frontend, GeneralCircuit
 
 
 class Pennylane(Frontend):
@@ -23,12 +23,16 @@ class Pennylane(Frontend):
         self.config = config
 
     def generateCircuit(self, gateSeq):
-        last_g = gateSeq[-1]
-        assert last_g.id == "measure"  # TODO: relax this?
-        
-        def circuit():
-            measured_qs = None
+        meas_wires = [g.targets[0] for g in gateSeq if g.id == 'measure']
+    
+        import pennylane.numpy as pnp
 
+        t_params = [g.params for g in gateSeq if g.symbol] # trainable params
+        t_params = pnp.array(t_params, requires_grad=True)
+
+        def circuit_body(params):
+            
+            c = 0
             for g in gateSeq:
                 if g.id =='h': 
                     pennylane.Hadamard(wires=g.targets)
@@ -43,13 +47,25 @@ class Pennylane(Frontend):
                     pennylane.CZ(wires=[g.controls, g.targets])
 
                 elif g.id =='rz': 
-                    pennylane.RZ(g.params, g.targets)
+                    if g.symbol:
+                        pennylane.RZ(params[c], g.targets)
+                        c+=1
+                    else:
+                        pennylane.RZ(g.params, g.targets)
 
                 elif g.id =='rx': 
-                    pennylane.RX(g.params, g.targets)
+                    if g.symbol:
+                        pennylane.RX(params[c], g.targets)
+                        c+=1
+                    else:
+                        pennylane.RX(g.params, g.targets)
 
                 elif g.id =='ry': 
-                    pennylane.RY(g.params, g.targets)
+                    if g.symbol:
+                        pennylane.RY(params[c], g.targets)
+                        c+=1
+                    else:
+                        pennylane.RY(g.params, g.targets)
 
                 elif g.id =='czpowgate': 
                     CZPow_matrix = [[1,0],[0,exp(1j*pi*g.params)]]
@@ -65,11 +81,19 @@ class Pennylane(Frontend):
                     pennylane.QubitUnitary(g.matrix, wires=g.targets)
 
                 elif g.id == "measure":
-                    measured_qs = g.targets
+                    pass
 
                 else:
                     raise NotImplementedError(f"The gate type {g.id} is not defined")
-            
-            return pennylane.sample(wires=measured_qs) 
-    
-        return circuit
+
+        if len(meas_wires) == 0:
+            def circuit(params):
+                circuit_body(params)
+                return pennylane.expval(pennylane.PauliZ(0))
+                # return [pennylane.expval(pennylane.PauliZ(q)) for q in range(self.nqubits)]
+        else:
+            def circuit(params):
+                circuit_body(params)
+                return pennylane.sample(wires=meas_wires)
+
+        return GeneralCircuit(circuit, t_params, None, None)
